@@ -1,4 +1,5 @@
 import json
+import os
 import sys
 
 
@@ -16,18 +17,34 @@ if __name__ == "__main__":
     shipping_locales_path = 'shipping_locales.json'
     apk_locales_path = 'apk_locales.json'
 
-    try:
-        shipping_locales = load_json(shipping_locales_path)
-        apk_locales = load_json(apk_locales_path)
-        
-        missing_locales = check_missing_locales(shipping_locales, apk_locales)
-        
-        if missing_locales:
-            print(f"Missing locales: {missing_locales}")
+    log_file = 'check_locales.log'
+    with open(log_file, 'w') as log:
+        try:
+            shipping_locales = load_json(shipping_locales_path)
+            apk_locales = load_json(apk_locales_path)
+
+            missing_locales = check_missing_locales(shipping_locales, apk_locales)
+
+            if missing_locales:
+                log.write(f"Missing locales: {missing_locales}\n")
+                print(f"Missing locales: {missing_locales}")
+
+                # Write to $GITHUB_STEP_SUMMARY
+                summary_file = os.getenv('GITHUB_STEP_SUMMARY')
+                if summary_file:
+                    with open(summary_file, 'a') as summary:
+                        summary.write("## Missing Locales\n")
+                        summary.write("| Missing Locales |\n")
+                        summary.write("|-----------------|\n")
+                        for locale in missing_locales:
+                            summary.write(f"| {locale} |\n")
+
+                sys.exit(1)
+            else:
+                log.write("All locales are present.\n")
+                print("All locales are present.")
+                sys.exit(0)
+        except Exception as e:
+            log.write(f"Error: {e}\n")
+            print(f"Error: {e}")
             sys.exit(1)
-        else:
-            print("All locales are present.")
-            sys.exit(0)
-    except Exception as e:
-        print(f"Error: {e}")
-        sys.exit(1)
