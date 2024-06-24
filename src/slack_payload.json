@@ -4,7 +4,7 @@
         "type": "header",
         "text": {
           "type": "plain_text",
-          "text": "Test",
+          "text": ":x: Fenix :nightly-browser: L10N Integrity Check Failed",
           "emoji": true
         }
       },
@@ -15,7 +15,14 @@
         "type": "section",
         "text": {
           "type": "mrkdwn",
-          "text": "Test"
+          "text": "*Github Actions Job*: <${{ env.server_url }}/${{ env.repository }}/actions/runs/${{ env.run_id }}|View Run>"
+        }
+      },
+      {
+        "type": "section",
+        "text": {
+            "type": "mrkdwn",
+            "text": "## Missing Locales\n${{ env.SUMMARY_CONTENT }}"
         }
       },
       {
