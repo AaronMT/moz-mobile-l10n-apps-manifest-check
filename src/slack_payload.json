@@ -22,7 +22,7 @@
         "type": "section",
         "text": {
             "type": "mrkdwn",
-            "text": "## Missing Locales\n${{ env.SUMMARY_CONTENT }}"
+            "text": "*Missing Locales*: ${{ env.LOCALES_MISSING }}"
         }
       },
       {

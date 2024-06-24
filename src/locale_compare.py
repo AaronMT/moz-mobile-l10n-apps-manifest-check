@@ -39,6 +39,11 @@ if __name__ == "__main__":
                         for locale in missing_locales:
                             summary.write(f"| {locale} |\n")
 
+                    # Write to $GITHUB_ENV
+                    # Set the missing locales as an environment variable
+                    with open(os.getenv('GITHUB_ENV'), 'a') as env_file:
+                        env_file.write(f"LOCALES_MISSING={','.join(missing_locales)}\n")
+
                 sys.exit(1)
             else:
                 log.write("All locales are present.\n")
